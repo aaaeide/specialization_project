@@ -4,4 +4,66 @@
 \skelpars[12]
 
 \subsection*{Matroids}
-\skelpars[6]
+A cryptomorphism is a mathematical structure that can be defined or axiomatized in several different ways, whose equivalence is not obviously apparent. A matroid is the prime example of a cryptomorphism, as they can be defined in a number of ways.
+
+
+
+\textbf{A matroid in terms of its independent sets.} Perhaps the most common and intuitive way to characterize a matroid is as an \textit{independence system}. An indepence system is a pair $(E,\mathcal{S})$, where $E$ is the \textit{ground set} and $S$ is the set of \textit{independent sets}, such that
+
+\begin{enumerate}[align=left]
+  \item $E$ is a set of elements, $E \not = \emptyset$, and
+  \item $\mathcal{S}$ is a subset of $\mathcal{P}(E)$.
+\end{enumerate}
+
+A matroid $\mathfrak{M} = (E, \mathcal{S})$ is an independence system that satisfies the following three additional properties:
+
+\begin{enumerate}[align=left]
+  \item [(I1)] $\emptyset \in \mathcal{S}$.
+  \item [(I2)] If $A \subseteq B$ and $B \in S$, then $A \in \mathcal{S}$. This property is called being \textbf{closed under inclusion}.
+  \item [(I3)] If $A,B \in \mathcal{S}$ and $|A| > |B|$, then there exists an $a \in A$ such that $B \cup \{a\} \in \mathcal{S}$.
+\end{enumerate}
+
+Sets that are not independent are \textit{dependent sets}. A useful direct result of property 3 above is that all subsets of an independent set are themselves independent. This is known as the \textbf{hereditary property}.
+
+
+
+\textbf{A matroid in terms of its bases.} A \textit{basis} of a matroid $\mathfrak{M} = (E,S)$ is a maximal independent set for $\mathfrak{M}$, that is, a set in $S$ that cannot have any element from $E$ added to it without becoming dependent. We can define a matroid as $\mathfrak{M} = (E, \mathcal{B})$, where $\mathcal{B}$ is the set of bases for $\mathfrak{M}$. It is easy to see that this is equivalent to the definition of the matroid in terms of its independent sets, as we can use the hereditary property to produce the set of independent sets from the set of bases.
+
+The bases of a matroid have some interesting properties:
+
+\begin{enumerate}[align=left]
+  \item [(B1)] All bases have the same size.
+  \item [(B2)] If $B_1, B_2 \in \mathcal{B}$, then for every $b_1 \in B_1 \setminus B_2$ there exists a $b_2 \in B_2 \setminus B_1$ such that $(B_1 \setminus \{x_1\}) \cup \{x_2\}$ is a basis. This is known as the \textbf{basis exchange property}.
+\end{enumerate}
+
+
+
+\textbf{A matroid in terms of its rank function.} Given a matroid $\mathfrak{M}$ on a set of elements $E$, the \textit{rank} of a set $S \subseteq E$, denoted $r(S)$, is defined to be the size of the largest subset of $S$ that is an independent set in $\mathfrak{M}$. By enumerating all subsets of $E$ whose rank equals its size, we find the independent sets of $\mathfrak{M}$. Hence, $\mathfrak{M} = (E, r)$ is equivalent to the independent sets definition of a matroid.
+
+Matroid rank functions (MRFs) are binary submodular functions. If $r$ is an MRF, it has the following properties:
+
+\begin{enumerate}[align=left]
+  \item [(MRF1)] $r(\emptyset) = 0$.
+  \item [(MRF2)] \skelline
+  \item [(MRF3)] \skelline
+  \item [TODO] Move this to binary submodular.
+\end{enumerate}
+
+
+
+\textbf{A matroid in terms of its circuits.} The \textit{nullity} of a set $S \subseteq E$, given by $n(S) = r(S) - |S|$. It is obvious that $0 \leq n(S) \leq |S|$. A \textit{circuit} is a dependent set $S$ with $n(S) = 1$, that is, an independent set with one "redundant" element added to it. \skelpar
+
+
+
+\textbf{A matroid in terms of its closed sets.} Knuth \cite{knuth-1975} \cite{knuth-1975} uses this definition of a matroid in his algorithm for generating random matroids, which is described in part \ref{random-matroids}.
+
+A matroid $\mathfrak{M} = (E, \mathcal{F})$ is a ground set of elements $E$ along with a family $\mathcal{F}$ of subsets of $E$, satisfying the following axioms:
+\begin{itemize}
+  \item [(C1)] $E \in \mathcal{F}$.
+  \item [(C2)] If $A, B \in \mathcal{F}$, then $A \cap B \in \mathcal{F}$.
+  \item [(C3)] If $A \in \mathcal{F}$ and $a,b \in E \setminus A$, then $b$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{a\}$ if and only if $a$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{b\}$.
+\end{itemize}
+
+$\mathcal{F}$ is the set of all \textit{closed sets} of $\mathfrak{M}$. A closed set is a dependent set that is maximal for its rank.
+
+\skelpar
