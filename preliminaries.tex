@@ -1,7 +1,46 @@
 \section{Preliminaries}
 
 \subsection*{Fair allocation}
+Fair allocation is the problem of assigning a set of items, either goods or chores, to a set of agents such that each agent is happy with what they obtain. This is an age-old problem in economics, especially for divisible items. In the divisible case, known as cake cutting, fair allocations always exist and can be computed efficiently. Fair allocation with indivisible items is a tougher nut to crack, but computer science offers a new way to approach it with algorithmic fair allocation.
+
+A fair allocation instance consists of $m$ indivisible items $\mathcal{M} = \{1, \ldots ,m\}$ and $n$ agents $\mathcal{N} = \{1, \ldots ,n\}$. An allocation is an $n$-partition of $\mathcal{M}$, $\textbf{X} = (X_1, \ldots, X_n)$, where each $X_i \subseteq \mathcal{M}$ is the bundle of items allocated to agent $i$. There is no sharing allowed; if $i \not = j$, $X_i \cap X_j = \emptyset$, meaning each item is allocated to at most one agent. If $\bigcup_{i \in \mathcal{N} } X_i  \not =  \mathcal{M}$, that is, not all items are allocated, then $\textbf{X}$ is a partial allocation.
+
+Each agent $i$ has a valuation function $v_i: 2^M \rightarrow \mathbb{R}$, where $2^M$ denotes the Power set of $M$, that assigns a value to each possible bundle of items. The \textit{valuation profile} is the vector of valuation functions $\mathbf{v} = (v_1, \ldots, v_n)$. The marginal gain agent $i$ enjoys by adding good $g$ to their bundle $X_i$ is given by $\Delta_i(X_i, g) = v_i(X_i \cup \{g\})$.
+
+In the simple case, the valuations are additive, meaning $v_i(S) = \sum_{e \in S} v_i(\{e\})$. The valuation functions are typically also assumed to be monotonic – adding an extra good to an agent's allocation will never decrease the bundle value. More general valuation functions exist. Of special interest in this report? paper? article? wtf is this text? are binary submodular valuation functions, which are equivalent to matroid rank functions (MRFs). If the valuation function $v_i$ is an MRF, it has the following properties:
+
+\begin{enumerate}[align=left]
+  \item [(MRF1)] $f_i(\emptyset) = 0$.
+  \item [(MRF2)] For all agents $i \in \mathcal{N}$ and all goods $g \in \mathcal{M}$, $\Delta_i(X_i, g) = v_i(X_i \cup \{ g \}) - v_i(X_i) \in \{ 0,1 \}$. That is to say, the marginal value gain of adding another element to a bundle is either 1 or 0.
+  \item [(MRF3)] For all agents $i \in \mathcal{N}$, all bundles $X, Y$ such that $X \subseteq Y \subseteq \mathcal{M}$, and all goods $e \in E \setminus Y$, we have $\Delta_i(X, e) \geq \Delta_i(Y, e)$. In other words, adding a good to a smaller bundle will never result in a lower marginal gain than adding it to a larger bundle.
+\end{enumerate}
+
+When evaluating an allocation, there are three aspects to consider: \textit{Fairness}, \textit{efficiency} and \textit{truthfulness}. Fairness can be evaluated in terms of envy-freeness or proportionality. An allocation $\textbf{X}$ is envy-free if, for any two agents $i, j \in N$, we have that $v_i(X_i) \geq v_i(X_j)$. Checking if a given instance admits an EF allocation is an NP-complete problem, even for $\{0, 1\}$- or $\{0, -1\}$-valued instances. Therefore, the research is typically focused on relaxations of EF, the two most prominent being \textit{envy-freeness up to one good} (EF1) and \textit{envy-freeness up to any good} (EFX).
+
+An allocation $\textbf{A}$ is proportional, on the other hand, if $v_i(A_i) \geq v_i(M) / n$. That is to say, each agent receives at least their proportional share of the total value. This does not take into account what other agents receive, as opposed to EF.\ If an allocation is envy-free, then it is also proportional.
+
+An allocation where no agent receives any good is trivially envy-free, but is very inefficient. Therefore, allocation algorithms typically make some guarantees with regards to efficiency as well. Allocation efficiency is concerned with how the agent happiness has been maximized. This can be measured in various ways:
+
+The utilitarian welfare of an allocation $\textbf{X}$ is the total happiness of all agents, given by \[\sum_{i \in N} v_i(X_i).\] By maximizing this you maximize the total happiness, hence the term utilitarian.
+
+The egalitarian welfare of an allocation $\textbf{X}$ is the happiness of the least happy agent: \[\min_{i \in N} v_i(X_i).\] Maximize this and you maximize the lowest happiness.
+
+Nash welfare is a compromise between egalitarian and utilitarian welfare, given by \[\prod_{i \in N} v_i(X_i).\] An allocation that maximizes Nash welfare is said to be MNW. Such an allocation exhibits very nice fairness properties.
+
+The final property is truthfulness, and is a game-theoretic concern that determines the degree to which agents can benefit from lying about their true preferences over the items being allocated. In a truthful system, the best course of action for each agent is to be perfectly honest. Such a system is considered \textit{strategyproof}.
+
+An allocation rule (for instance, MNW) is group strategyproof (GSP) if there does not exist valuation profiles $\mathbf{v}, \mathbf{v}'$ and a  group of agents $\mathcal{C} \subseteq \mathcal{N}$ such that
+
+\[\begin{aligned}
+    v'_k      & = v_k      &  & \forall k \in \mathcal{N} \setminus \mathcal{C}, \\
+    v_j(A'_j) & > v_j(A_j) &  & \forall j \in \mathcal{C},
+  \end{aligned}\]
+
+where $A' = f(\mathbf{v}'), A = f(\mathbf{v})$. GSP is a stronger criterion than strategyproofness.
+
+
 \skelpars[12]
+
 
 \subsection*{Matroids}
 A cryptomorphism is a mathematical structure that can be defined or axiomatized in several different ways, whose equivalence is not obviously apparent. A matroid is the prime example of a cryptomorphism, as they can be defined in a number of ways.
