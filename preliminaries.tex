@@ -1,6 +1,6 @@
-\section{Preliminaries}
+\section{Background}\label{background}
 
-\subsection*{Fair allocation}
+\subsection{Fair allocation}
 Fair allocation is the problem of assigning a set of items, either goods or chores, to a set of agents such that each agent is happy with what they obtain. This is an age-old problem in economics, especially for divisible items. In the divisible case, known as cake cutting, fair allocations always exist and can be computed efficiently. Fair allocation with indivisible items is a tougher nut to crack, but computer science offers a new way to approach it with algorithmic fair allocation.
 
 A fair allocation instance consists of $m$ indivisible items $\mathcal{M} = \{1, \ldots ,m\}$ and $n$ agents $\mathcal{N} = \{1, \ldots ,n\}$. An allocation is an $n$-partition of $\mathcal{M}$, $\textbf{X} = (X_1, \ldots, X_n)$, where each $X_i \subseteq \mathcal{M}$ is the bundle of items allocated to agent $i$. There is no sharing allowed; if $i \not = j$, $X_i \cap X_j = \emptyset$, meaning each item is allocated to at most one agent. If $\bigcup_{i \in \mathcal{N} } X_i  \not =  \mathcal{M}$, that is, not all items are allocated, then $\textbf{X}$ is a partial allocation.
@@ -15,7 +15,7 @@ In the simple case, the valuations are additive, meaning $v_i(S) = \sum_{e \in S
   \item [(MRF3)] For all agents $i \in \mathcal{N}$, all bundles $X, Y$ such that $X \subseteq Y \subseteq \mathcal{M}$, and all goods $e \in E \setminus Y$, we have $\Delta_i(X, e) \geq \Delta_i(Y, e)$. In other words, adding a good to a smaller bundle will never result in a lower marginal gain than adding it to a larger bundle.
 \end{enumerate}
 
-When evaluating an allocation, there are three aspects to consider: \textit{Fairness}, \textit{efficiency} and \textit{truthfulness}. Fairness can be evaluated in terms of envy-freeness or proportionality. An allocation $\textbf{X}$ is envy-free if, for any two agents $i, j \in N$, we have that $v_i(X_i) \geq v_i(X_j)$. Checking if a given instance admits an EF allocation is an NP-complete problem, even for $\{0, 1\}$- or $\{0, -1\}$-valued instances. Therefore, the research is typically focused on relaxations of EF, the two most prominent being \textit{envy-freeness up to one good} (EF1) and \textit{envy-freeness up to any good} (EFX).
+When evaluating an allocation, there are three aspects to consider: \textit{Fairness}, \textit{efficiency} and \textit{truthfulness}. Fairness can be evaluated in terms of envy-freeness or proportionality. An allocation $\textbf{X}$ is envy-free if, for any two agents $i, j \in N$, we have that $v_i(X_i) \geq v_i(X_j)$. Checking if a given instance admits an EF allocation is an NP-complete problem, even for $\{0, 1\}$- or $\{0, -1\}$-valued instances, and there is often no feasible EF allocation. There is no way, for instance, to allocate one item between two agents in an envy-free manner. Therefore, the research is typically focused on relaxations of EF, the two most prominent being \textit{envy-freeness up to one good} (EF1) and \textit{envy-freeness up to any good} (EFX).
 
 An allocation $\textbf{A}$ is proportional, on the other hand, if $v_i(A_i) \geq v_i(M) / n$. That is to say, each agent receives at least their proportional share of the total value. This does not take into account what other agents receive, as opposed to EF.\ If an allocation is envy-free, then it is also proportional.
 
@@ -25,7 +25,7 @@ The utilitarian welfare of an allocation $\textbf{X}$ is the total happiness of 
 
 The egalitarian welfare of an allocation $\textbf{X}$ is the happiness of the least happy agent: \[\min_{i \in N} v_i(X_i).\] Maximize this and you maximize the lowest happiness.
 
-Nash welfare is a compromise between egalitarian and utilitarian welfare, given by \[\prod_{i \in N} v_i(X_i).\] An allocation that maximizes Nash welfare is said to be MNW. Such an allocation exhibits very nice fairness properties.
+Nash welfare is a compromise between egalitarian and utilitarian welfare, given by \[\prod_{i \in N} v_i(X_i).\] An allocation that maximizes Nash welfare is said to be MNW.\@ Such an allocation exhibits very nice fairness properties.
 
 The final property is truthfulness, and is a game-theoretic concern that determines the degree to which agents can benefit from lying about their true preferences over the items being allocated. In a truthful system, the best course of action for each agent is to be perfectly honest. Such a system is considered \textit{strategyproof}.
 
@@ -38,12 +38,12 @@ An allocation rule (for instance, MNW) is group strategyproof (GSP) if there doe
 
 where $A' = f(\mathbf{v}'), A = f(\mathbf{v})$. GSP is a stronger criterion than strategyproofness.
 
+We have hitherto described fair allocation in an unconstrained setting. However, for many practical use cases, there may be good reasons to place constraints on which bundles are legal. For instance, connectivity constraints, in which only bundles of items which are connected according to a supplied connectivity graph is legal. Conflict constraints are another example, in which the item graph describes which items can never co-exist in the same bundle. Of special interest in this (I still don't know what to call this piece of text), however, are matroid constraints, in which we require each allocated bundle to be an independent set of some common matroid $\mathfrak{M}$. Biswas and Barman \cite{biswas-barman-2018} showed that EF1 allocations exist and can be found efficiently when agents have identical valuations and $\mathfrak{M}$ is laminar, but it is still an open question what fairness guarantees can be made for instances with more general constraint matroids or valuation functions.
 
-\skelpars[12]
 
 
-\subsection*{Matroids}
-A cryptomorphism is a mathematical structure that can be defined or axiomatized in several different ways, whose equivalence is not obviously apparent. A matroid is the prime example of a cryptomorphism, as they can be defined in a number of ways.
+\subsection{Matroids}\label{background/matroids}
+A cryptomorphism is a mathematical structure that can be defined or axiomatized in several different ways, whose equivalence is not obviously apparent. A matroid is the prime example of a cryptomorphism, as they can be defined in a number of ways. Which definition is most applicable will depend on the use case. In this section, I will describe some of the ways to define a matroid.
 
 
 
@@ -58,11 +58,11 @@ A matroid $\mathfrak{M} = (E, \mathcal{S})$ is an independence system that satis
 
 \begin{enumerate}[align=left]
   \item [(I1)] $\emptyset \in \mathcal{S}$.
-  \item [(I2)] If $A \subseteq B$ and $B \in S$, then $A \in \mathcal{S}$. This property is called being \textbf{closed under inclusion}.
+  \item [(I2)] If $A \subseteq B$ and $B \in S$, then $A \in \mathcal{S}$. This property is called being closed under inclusion.
   \item [(I3)] If $A,B \in \mathcal{S}$ and $|A| > |B|$, then there exists an $a \in A$ such that $B \cup \{a\} \in \mathcal{S}$.
 \end{enumerate}
 
-Sets that are not independent are \textit{dependent sets}. A useful direct result of property 3 above is that all subsets of an independent set are themselves independent. This is known as the \textbf{hereditary property}.
+Sets that are not independent are \textit{dependent sets}. A useful direct result of (I3) is that all subsets of an independent set are themselves independent. This is known as the \textbf{hereditary property}.
 
 
 
@@ -77,20 +77,11 @@ The bases of a matroid have some interesting properties:
 
 
 
-\textbf{A matroid in terms of its rank function.} Given a matroid $\mathfrak{M}$ on a set of elements $E$, the \textit{rank} of a set $S \subseteq E$, denoted $r(S)$, is defined to be the size of the largest subset of $S$ that is an independent set in $\mathfrak{M}$. By enumerating all subsets of $E$ whose rank equals its size, we find the independent sets of $\mathfrak{M}$. Hence, $\mathfrak{M} = (E, r)$ is equivalent to the independent sets definition of a matroid.
-
-Matroid rank functions (MRFs) are binary submodular functions. If $r$ is an MRF, it has the following properties:
-
-\begin{enumerate}[align=left]
-  \item [(MRF1)] $r(\emptyset) = 0$.
-  \item [(MRF2)] \skelline
-  \item [(MRF3)] \skelline
-  \item [TODO] Move this to binary submodular.
-\end{enumerate}
+\textbf{A matroid in terms of its rank function.} Given a matroid $\mathfrak{M}$ on a set of elements $E$, the \textit{rank} of a set $S \subseteq E$, denoted $r(S)$, is defined to be the size of the largest subset of $S$ that is an independent set in $\mathfrak{M}$. By enumerating all subsets of $E$ whose rank equals its size, we find the independent sets of $\mathfrak{M}$. Hence, $\mathfrak{M} = (E, r)$ is equivalent to the independent sets definition of a matroid. The properties of $r$ is described
 
 
 
-\textbf{A matroid in terms of its circuits.} The \textit{nullity} of a set $S \subseteq E$, given by $n(S) = r(S) - |S|$. It is obvious that $0 \leq n(S) \leq |S|$. A \textit{circuit} is a dependent set $S$ with $n(S) = 1$, that is, an independent set with one "redundant" element added to it. \skelpar
+\textbf{A matroid in terms of its circuits.} The \textit{nullity} of a set $S \subseteq E$, given by $n(S) = r(S) - |S|$. It is obvious that $0 \leq n(S) \leq |S|$. A \textit{circuit} is a dependent set $S$ with $n(S) = 1$, that is, an independent set with one ``redundant'' element added to it. \skelpar
 
 
 

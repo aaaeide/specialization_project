@@ -1,5 +1,29 @@
 \section{Random Matroids}\label{random-matroids}
 
+In his 1974 paper, Knuth \cite{knuth-1975} describes a mechanism for generating random matroids in terms of their closed sets. The definition of a matroid in terms of its closed sets can be found in section \ref{background/matroids}.
+
+Let $\mathfrak{M} = (E, \mathcal{F})$ be a matroid, where $E$ is the ground set and $\mathcal{F}$ the family of closed sets of $\mathfrak{M}$. Since $\mathcal{F}$ is a subset of the $2^E$, the number of possible such families (and thus different matroids over $E$) is bounded by $2^{2^{|E|}}$. Therefore, it is infeasible to look at all possible families of closed subsets over E. Knuth uses a bottom-up approach instead, constructing $\mathcal{F}$ by starting with the smallest closed sets and incrementally constructing the larger ones. Knuth's algorithm is given in Algorithm \ref{alg:knuth}.
+
+The algorithm relies on two subroutines, \pr{Enlarge} and \pr{Superpose}.
+
+\begin{algorithm}[float*=h,width=\textwidth]{Knuth's matroid construction, \pr{Knuth}(E, X)}{knuth}
+
+  \begin{pseudo}[line-height=1.1]
+    $r = 0, F_r = \{ \emptyset \}, F_{r+1} = \{ \emptyset \}$ \\
+    while true  \\+
+    $\mathcal{F}_{r+1} = \{ A \cup \{a\} : A \in \mathcal{F}_r, a \in E \setminus A \}$\\
+    \pr{Enlarge}(F_{r+1}, \mathrm{X}) \\
+    \pr{Superpose}(F_{r+1}, F_r) \\
+
+    if $E \not \in F_{r+1}$ \\+
+    $r \leftarrow r+1$ \\-
+    else \\+
+    return $F = \{F_0, \ldots, F_r\}$
+
+  \end{pseudo}
+
+\end{algorithm}
+
 \skelpars[8]{}
 
 
