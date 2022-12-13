@@ -77,7 +77,7 @@ The bases of a matroid have some interesting properties:
 
 
 
-\textbf{A matroid in terms of its rank function.} Given a matroid $\mathfrak{M}$ on a set of elements $E$, the \textit{rank} of a set $S \subseteq E$, denoted $r(S)$, is defined to be the size of the largest subset of $S$ that is an independent set in $\mathfrak{M}$. By enumerating all subsets of $E$ whose rank equals its size, we find the independent sets of $\mathfrak{M}$. Hence, $\mathfrak{M} = (E, r)$ is equivalent to the independent sets definition of a matroid. The properties of $r$ is described
+\textbf{A matroid in terms of its rank function.} Given a matroid $\mathfrak{M}$ on a set of elements $E$, the \textit{matroid rank function} $r : 2^E \to \mathbb{Z}^*$ accepts a set $S \subseteq E$, and gives the size of the largest subset of $S$ that is an independent set in $\mathfrak{M}$. It follows that $r(S) \in \{ 0, \ldots, |B| \}, B \in \mathcal{B}$, for all $S \subseteq E$. $|B|$ is said to be the rank of the matroid itself, $r(\mathfrak{M})$. The properties of the MRF $r$ is described above. By enumerating all subsets of $E$ whose rank equals its size, we find the independent sets of $\mathfrak{M}$. Hence, $\mathfrak{M} = (E, r)$ is equivalent to the independent sets definition of a matroid.
 
 
 
@@ -94,6 +94,13 @@ A matroid $\mathfrak{M} = (E, \mathcal{F})$ is a ground set of elements $E$ alon
   \item [(C3)] If $A \in \mathcal{F}$ and $a,b \in E \setminus A$, then $b$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{a\}$ if and only if $a$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{b\}$.
 \end{itemize}
 
-$\mathcal{F}$ is the set of all \textit{closed sets} of $\mathfrak{M}$. A closed set is a dependent set that is maximal for its rank.
+$\mathcal{F}$ is the set of all \textit{closed sets} of $\mathfrak{M}$. A closed set is a set whose cardinality maximal for its rank, meaning you cannot add any element to it without increasing its rank. Some other useful properties of closed sets that will be useful in our implementation of Knuth's algorithm later:
 
-\skelpar
+\begin{itemize}
+  \item [(C4)] If $S \in \mathcal{F}$ is a closed set for $\mathfrak{M}$, and $r(S) = |S|$ (or, equivalently, $n(S) = 0$), then $S$ is also an independent set for $\mathfrak{M}$.
+  \item [(C5)] $E$ is a closed set of $\mathfrak{M}$, such that $r(E) = r(\mathfrak{M})$. E is the closure (DEFINE) of all bases in $\mathcal{B}$.
+\end{itemize}
+
+Property (C4) is self-evident. By definition, if the rank of a set equals its cardinality, then it is an independent set. An independent set is also a closed set if adding any element to it produces another, larger independent set.
+
+\textbf{Types of matroids.} \skelpar

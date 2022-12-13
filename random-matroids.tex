@@ -1,28 +1,37 @@
-\section{Random Matroids}\label{random-matroids}
+\section{Random matroids}\label{random-matroids}
+\begin{algorithm}[float*=ht,width=\textwidth]{Knuth's matroid construction, \pr{Knuth-Matroid}(E, X)}{knuth}
 
-In his 1974 paper, Knuth \cite{knuth-1975} describes a mechanism for generating random matroids in terms of their closed sets. The definition of a matroid in terms of its closed sets can be found in section \ref{background/matroids}.
+  \textbf{Input:} The ground set of elements $E$, and a sequence of enlargements $\mathrm{X}$.
 
-Let $\mathfrak{M} = (E, \mathcal{F})$ be a matroid, where $E$ is the ground set and $\mathcal{F}$ the family of closed sets of $\mathfrak{M}$. Since $\mathcal{F}$ is a subset of the $2^E$, the number of possible such families (and thus different matroids over $E$) is bounded by $2^{2^{|E|}}$. Therefore, it is infeasible to look at all possible families of closed subsets over E. Knuth uses a bottom-up approach instead, constructing $\mathcal{F}$ by starting with the smallest closed sets and incrementally constructing the larger ones. Knuth's algorithm is given in Algorithm \ref{alg:knuth}.
+  \textbf{Output:} The family of closed sets of the resulting matroid $\mathrm{F} = (F_0, \ldots, F_r)$, where $F_i$ is the set of closed sets of rank $i$.
 
-The algorithm relies on two subroutines, \pr{Enlarge} and \pr{Superpose}.
-
-\begin{algorithm}[float*=h,width=\textwidth]{Knuth's matroid construction, \pr{Knuth}(E, X)}{knuth}
-
-  \begin{pseudo}[line-height=1.1]
+  \begin{pseudo}[label=\small\arabic*, indent-mark, line-height=1.1]
     $r = 0, F_r = \{ \emptyset \}, F_{r+1} = \{ \emptyset \}$ \\
     while true  \\+
     $\mathcal{F}_{r+1} = \{ A \cup \{a\} : A \in \mathcal{F}_r, a \in E \setminus A \}$\\
-    \pr{Enlarge}(F_{r+1}, \mathrm{X}) \\
+    \pr{Enlarge}(F_{r+1}, X_{r+1}) \\
     \pr{Superpose}(F_{r+1}, F_r) \\
 
     if $E \not \in F_{r+1}$ \\+
     $r \leftarrow r+1$ \\-
     else \\+
-    return $F = \{F_0, \ldots, F_r\}$
+    return $\mathrm{F} = (F_0, \ldots, F_r)$
 
   \end{pseudo}
 
 \end{algorithm}
+
+In his 1974 paper, Knuth \cite{knuth-1975} describes a mechanism for generating random matroids in terms of their closed sets. The definition of a matroid in terms of its closed sets can be found in section \ref{background/matroids}.
+
+Let $\mathfrak{M} = (E, \mathcal{F})$ be a matroid, where $E$ is the ground set and $\mathcal{F}$ the family of closed sets of $\mathfrak{M}$. Since $\mathcal{F}$ is a subset of the $2^E$, the number of possible such families (and thus different matroids over $E$) is bounded by $2^{2^{|E|}}$. Therefore it is infeasible to look at all possible families of closed subsets over E. Knuth uses a bottom-up approach instead, constructing $\mathcal{F}$ by starting with the smallest closed sets and incrementally constructing the larger ones. This mechanism is presented in Algorithm \ref{alg:knuth}.
+
+\pr{Knuth-Matroid} accepts two arguments, the ground set of elements for the matroid, and a sequence $\mathrm{X}$ of ``enlargements,'' where $X_{r+1}$ is the set of enlargements two apply at step $r+1$. The algorithm relies on two subroutines, \pr{Enlarge} and \pr{Superpose}, which will be explained shortly. The algorithm incrementally constructs a list of sets of subsets of $E$, each element a family $F_i \subseteq 2^E$ of closed sets of rank $i$. When the algorithm terminates, the list $\mathrm{F} = (F_0, \ldots, F_r)$ is returned, where $F_i$ is the family of closed sets of rank $i$. In the paper, Knuth shows that $\bigcup_{i=0}^r F_i = \mathcal{F}$, and so the algorithm outputs correct matroids.
+
+The algorithm initializes with $r = 0$. The only closed set of rank 0 is the empty set, so $F_r = F_0 = \{ \emptyset \}$. Inside the loop, on line 3, we produce $F_{r+1}$ from $F_r$ by generating all ``covers'' of the sets in $F_r$, meaning all sets in $F_r$ with one more element added from $E$. Had we only done this for $|E|$ iterations, we would have ended up with the uniform matroid. Not terribly interesting! The \pr{Enlarge} subroutine is what allows us to generate arbitrary matroids, by selectively enlarging the family of closed sets of a given rank. The subroutine enlarges $F_{r+1}$ by simply adding the sets specified in $X_{r+1}$.
+
+The second subroutine, \pr{Superpose}, does the following: If $F_{r+1}$ contains two sets $A,B$ whose intersection $A \cap B \not \subseteq C$, for some $C \in F_{r}$, replace $A,B$ with $A \cup B$. Repeat until no two sets exist in $F_{r+1}$ whose intersection is not contained within some set $C \in F_{r}$. The Julia code for this subroutine can be found in THE APPENDIX. Knuth shows that massaging each $F_{i}$ in this manner gives a valid matroid $\mathfrak{M} = (E, \mathcal{F} = \bigcup_{i=0}^r F_i)$, satisfying the properties (C1)-(C3).
+
+The algorithm terminates when the ground set itself is a closed set in $F_{r+1}$. As described above
 
 \skelpars[8]{}
 
