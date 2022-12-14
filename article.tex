@@ -3,6 +3,8 @@
 \usepackage{skeldoc}
 \usepackage[kw]{pseudo}
 \usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{threeparttable}
 
 
 %% Additional packages and commands
@@ -29,18 +31,19 @@
   %% Abstract
 
   \begin{abstract}
-    \noindent \skelpar
+    \noindent \skelpar{TODO:\ Skrive abstract. Gjøres til slutt.}
   \end{abstract}
 
 }
 
 %% Main body
 
+
 \input{introduction}
 
 \input{preliminaries}
 
-\input{current-approaches}
+% \input{current-approaches}
 
 \input{random-matroids}
 
@@ -52,5 +55,7 @@
 \skelbib
 
 \bibliography{article.bib}
+
+\printskelnotes
 
 \end{document}

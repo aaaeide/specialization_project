@@ -7,7 +7,7 @@ A fair allocation instance consists of $m$ indivisible items $\mathcal{M} = \{1,
 
 Each agent $i$ has a valuation function $v_i: 2^M \rightarrow \mathbb{R}$, where $2^M$ denotes the Power set of $M$, that assigns a value to each possible bundle of items. The \textit{valuation profile} is the vector of valuation functions $\mathbf{v} = (v_1, \ldots, v_n)$. The marginal gain agent $i$ enjoys by adding good $g$ to their bundle $X_i$ is given by $\Delta_i(X_i, g) = v_i(X_i \cup \{g\})$.
 
-In the simple case, the valuations are additive, meaning $v_i(S) = \sum_{e \in S} v_i(\{e\})$. The valuation functions are typically also assumed to be monotonic – adding an extra good to an agent's allocation will never decrease the bundle value. More general valuation functions exist. Of special interest in this report? paper? article? wtf is this text? are binary submodular valuation functions, which are equivalent to matroid rank functions (MRFs). If the valuation function $v_i$ is an MRF, it has the following properties:
+In the simple case, the valuations are additive, meaning $v_i(S) = \sum_{e \in S} v_i(\{e\})$. The valuation functions are typically also assumed to be monotonic – adding an extra good to an agent's allocation will never decrease the bundle value. More general valuation functions exist. Of special interest in this report are binary submodular valuation functions, which are equivalent to matroid rank functions (MRFs). If the valuation function $v_i$ is an MRF, it has the following properties:
 
 \begin{enumerate}[align=left]
   \item [(MRF1)] $f_i(\emptyset) = 0$.
@@ -81,7 +81,7 @@ The bases of a matroid have some interesting properties:
 
 
 
-\textbf{A matroid in terms of its circuits.} The \textit{nullity} of a set $S \subseteq E$, given by $n(S) = r(S) - |S|$. It is obvious that $0 \leq n(S) \leq |S|$. A \textit{circuit} is a dependent set $S$ with $n(S) = 1$, that is, an independent set with one ``redundant'' element added to it. \skelpar
+\textbf{A matroid in terms of its circuits.} The \textit{nullity} of a set $S \subseteq E$, given by $n(S) = r(S) - |S|$. It is obvious that $0 \leq n(S) \leq |S|$. A \textit{circuit} is a dependent set $S$ with $n(S) = 1$, that is, an independent set with one ``redundant'' element added to it. \skelpar{TODO:\ Circuits}
 
 
 
@@ -101,6 +101,6 @@ $\mathcal{F}$ is the set of all \textit{closed sets} of $\mathfrak{M}$. A closed
   \item [(C5)] $E$ is a closed set of $\mathfrak{M}$, such that $r(E) = r(\mathfrak{M})$. E is the closure (DEFINE) of all bases in $\mathcal{B}$.
 \end{itemize}
 
-Property (C4) is self-evident. By definition, if the rank of a set equals its cardinality, then it is an independent set. An independent set is also a closed set if adding any element to it produces another, larger independent set.
+Property (C4) is obvious, as if there was a way to increase the cardinality of $S$ without increasing the rank, $S$ would not be closed, and the cardinality of a set can not be lower than its rank (this follows from the fact that $r$ is an MRF). By definition, if the rank of a set equals its cardinality, then it is an independent set. An independent set is also a closed set if adding any element to it produces another, larger independent set.
 
-\textbf{Types of matroids.} \skelpar
+\textbf{Types of matroids.} \skelpar{TODO:\ prate litt om typer matroider}
