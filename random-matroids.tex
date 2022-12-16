@@ -1,5 +1,10 @@
-\section{Random matroids}\label{random-matroids}
-\begin{algorithm}[float*=ht,width=\textwidth]{Knuth's matroid construction, \pr{Knuth-Matroid}(E, \mathrm{X})}{knuth}
+\chapter{Random matroids}\label{random-matroids}
+
+In his 1974 paper, Knuth~\cite{knuth-1975} describes a mechanism for generating random matroids in terms of their closed sets. The definition of a matroid in terms of its closed sets can be found in part~\ref{background/matroids}.
+
+Let $\mathfrak{M} = (E, \mathcal{F})$ be a matroid, where $E$ is the ground set and $\mathcal{F}$ the family of closed sets of $\mathfrak{M}$. Since $\mathcal{F}$ is a subset of the $2^E$, the number of possible such families (and thus different matroids over $E$) is bounded by $2^{2^{|E|}}$. Therefore it is infeasible to look at all possible families of closed subsets over E. Knuth uses a bottom-up approach instead, constructing $\mathcal{F}$ by starting with the smallest closed sets and incrementally constructing the larger ones. This mechanism is presented in Algorithm~\ref{alg:knuth}.
+
+\begin{algorithm}[float*=ht,width=\textwidth]{\pr{Knuth-Matroid}(E, \mathrm{X})}{knuth}
 
   \textbf{Input:} The ground set of elements $E$, and a list of enlargements $\mathrm{X}$.
 
@@ -20,10 +25,6 @@
   \end{pseudo}
 
 \end{algorithm}
-
-In his 1974 paper, Knuth \cite{knuth-1975} describes a mechanism for generating random matroids in terms of their closed sets. The definition of a matroid in terms of its closed sets can be found in section \ref{background/matroids}.
-
-Let $\mathfrak{M} = (E, \mathcal{F})$ be a matroid, where $E$ is the ground set and $\mathcal{F}$ the family of closed sets of $\mathfrak{M}$. Since $\mathcal{F}$ is a subset of the $2^E$, the number of possible such families (and thus different matroids over $E$) is bounded by $2^{2^{|E|}}$. Therefore it is infeasible to look at all possible families of closed subsets over E. Knuth uses a bottom-up approach instead, constructing $\mathcal{F}$ by starting with the smallest closed sets and incrementally constructing the larger ones. This mechanism is presented in Algorithm \ref{alg:knuth}.
 
 \pr{Knuth-Matroid} accepts two arguments, the ground set of elements for the matroid, and a sequence $\mathrm{X}$ of ``enlargements,'' where $X_{r+1}$ is the set of enlargements two apply at step $r+1$. The algorithm relies on two subroutines, \pr{Enlarge} and \pr{Superpose}, which will be explained shortly. The algorithm incrementally constructs a list of sets of subsets of $E$, each element a family $F_i \subseteq 2^E$ of closed sets of rank $i$. When the algorithm terminates, the list $\mathrm{F} = [F_0, \ldots, F_r]$ is returned, where $F_i$ is the family of closed sets of rank $i$. In the paper, Knuth shows that $\bigcup_{i=0}^r F_i = \mathcal{F}$, and so the algorithm outputs valid matroids.
 
@@ -55,7 +56,7 @@ My Julia implementation of \pr{Knuth-Matroid} can be found in THE APPENDIX. The 
 
 
 
-\subsection*{Finding the other properties of $\mathfrak{M}$}
+\section*{Finding the other properties of $\mathfrak{M}$}
 Given a \pr{Knuth-Matroid}$(E, \mathrm{X}) = \mathfrak{M} = (E, \mathrm{F})$, where $\mathrm{F}$ is the list $[F_0, F_1, \ldots, F_r)$ such that $F_0 \cup F_1 \cup \ldots \cup F_r = \mathcal{F}$, the family of closed sets of $\mathfrak{M}$, and $r$ is the rank of the matroid, we want to find
 \begin{enumerate}
   \item the bases $\mathcal{B}$ of $\mathfrak{M}$,
@@ -87,41 +88,40 @@ Now, let's consider how we can express our matroid as $\mathfrak{M} = (E, \mathc
   return $\{ B \subseteq E : |B| = \pr{Rank}(B, \mathfrak{M}) = r \}$
 \end{pseudo}
 
-\subsection*{Results}
-Knuth generates random matroids by applying random ``coarsening'' in the \pr{Enlarge} step. The randomized version, \pr{Random-Knuth-Matroid}, works by applying \pr{Superpose} immediately after generating covers, then choosing a random member $A$ of $\mathcal{F}_{r+1}$ and a random element $a \in E \setminus A$, replacing $A$ with $A \cup \{a\}$ and finally reapplying \pr{Superpose}. Table \ref{tab:coarsening} below shows the average values obtained for various settings of the parameters. The sequence $(p_1, p_2, \ldots)$ holds the number of such coarsening steps to be applied at each iteration of the algorithm.
-
-I have also included Knuth's results using his ALGOL implementation in table \ref{tab:knuth}.
+\section*{Results}
+Knuth generates random matroids by applying random ``coarsening'' in the \pr{Enlarge} step. The randomized version, \pr{Random-Knuth-Matroid}, works by applying \pr{Superpose} immediately after generating covers, then choosing a random member $A$ of $\mathcal{F}_{r+1}$ and a random element $a \in E \setminus A$, replacing $A$ with $A \cup \{a\}$ and finally reapplying \pr{Superpose}. Table~\ref{tab:coarsening} below shows the average values obtained for various settings of the parameters. The sequence $(p_1, p_2, \ldots)$ holds the number of such coarsening steps to be applied at each iteration of the algorithm.
 
 \begin{table*}[ht]
   \centering
   \caption{Observed mean values for \pr{Random-Knuth-Matroid}.}
   \label{tab:coarsening}
   \begin{threeparttable}
-    \begin{tabular}{llllllllll}
+    \begin{tabular}{llllllllllll}
       \toprule
-      $n$ & $(p_1, p_2, \ldots)$ & Trials                  & Bases & $|F_2|$ & $|F_3|$ & $|F_4|$ & $|F_5|$ & $|F_6|$ \\
+      $n$ & $(p_1, p_2, \ldots)$ & Trials                  & Bases & $|F_2|$ & $|F_3|$ & $|F_4|$ & $|F_5|$ & $|F_6|$ & $|F_7|$ & $|F_8|$ \\
       \midrule
-      10  & $(6, 0, 0)$          & 44 \textsuperscript{a}  & 100.0 & 30.3    & 1.0     &         &         &         \\
-      10  & $(6, 0, 0)$          & 917 \textsuperscript{b} & 76.6  & 28.3    & 25.5    & 1.0     &         &         \\
-      10  & $(6, 0, 0)$          & 39 \textsuperscript{c}  & 51.6  & 31.0    & 38.5    & 27.8    & 1.0     &         \\
-      10  & $(5, 1, 0)$          & 26 \textsuperscript{a}  & 107.2 & 33.3    & 1.0     &         &         &         \\
-      10  & $(5, 1, 0)$          & 935 \textsuperscript{b} & 102.6 & 32.7    & 33.0    & 1.0     &         &         \\
-      10  & $(5, 1, 0)$          & 39 \textsuperscript{c}  & 53.0  & 33.0    & 44.6    & 48.0    & 1.0     &         \\
-      10  & $(5, 2, 0)$          & 791 \textsuperscript{a} & 108.0 & 32.5    & 1.0     &         &         &         \\
-      10  & $(5, 2, 0)$          & 201 \textsuperscript{b} & 100.0 & 32.9    & 32.6    & 1.0     &         &         \\
-      10  & $(5, 2, 0)$          & 8 \textsuperscript{c}   & 24.6  & 30.1    & 39.9    & 66.0    & 1.0     &         \\
-      10  & $(6, 1, 0)$          & 862 \textsuperscript{a} & 99.2  & 28.4    & 1.0     &         &         &         \\
-      10  & $(6, 1, 0)$          & 137 \textsuperscript{b} & 69.8  & 28.1    & 29.1    & 1.0     &         &         \\
-      10  & $(6, 1, 0)$          & 1 \textsuperscript{c}   & 48.0  & 33.0    & 41.0    & 33.0    & 1.0     &         \\
-      10  & $(4, 2, 0)$          & 12 \textsuperscript{a}  & 111.1 & 36.3    & 1.0     &         &         &         \\
-      10  & $(4, 2, 0)$          & 950 \textsuperscript{b} & 119.2 & 35.9    & 42.5    & 1.0     &         &         \\
-      10  & $(4, 2, 0)$          & 38 \textsuperscript{c}  & 73.4  & 36.4    & 52.6    & 39.4    & 1.0     &         \\
-      10  & $(3, 3, 0)$          & 4 \textsuperscript{a}   & 115.0 & 39.0    & 1.0     &         &         &         \\
-      10  & $(3, 3, 0)$          & 911 \textsuperscript{b} & 138.0 & 38.5    & 53.3    & 1.0     &         &         \\
-      10  & $(3, 3, 0)$          & 85 \textsuperscript{c}  & 90.6  & 38.7    & 61.9    & 36.2    & 1.0     &         \\
-      10  & $(0, 6, 0)$          & 767 \textsuperscript{b} & 171.8 & 45.0    & 85.6    & 1.0     &         &         \\
-      10  & $(0, 6, 0)$          & 230 \textsuperscript{c} & 128.4 & 45.0    & 95.8    & 72.7    & 1.0     &         \\
-      10  & $(0, 6, 0)$          & 3 \textsuperscript{d}   & 52.3  & 45.0    & 94.7    & 90.3    & 32.7    & 1.0     \\
+      10  & $(6, 0, 0)$          & 44 \textsuperscript{a}  & 100.0 & 30.3    & 1.0     &         &         &         &         &         \\
+      10  & $(6, 0, 0)$          & 917 \textsuperscript{b} & 76.6  & 28.3    & 25.5    & 1.0     &         &         &         &         \\
+      10  & $(6, 0, 0)$          & 39 \textsuperscript{c}  & 51.6  & 31.0    & 38.5    & 27.8    & 1.0     &         &         &         \\
+      10  & $(5, 1, 0)$          & 26 \textsuperscript{a}  & 107.2 & 33.3    & 1.0     &         &         &         &         &         \\
+      10  & $(5, 1, 0)$          & 935 \textsuperscript{b} & 102.6 & 32.7    & 33.0    & 1.0     &         &         &         &         \\
+      10  & $(5, 1, 0)$          & 39 \textsuperscript{c}  & 53.0  & 33.0    & 44.6    & 48.0    & 1.0     &         &         &         \\
+      10  & $(5, 2, 0)$          & 791 \textsuperscript{a} & 108.0 & 32.5    & 1.0     &         &         &         &         &         \\
+      10  & $(5, 2, 0)$          & 201 \textsuperscript{b} & 100.0 & 32.9    & 32.6    & 1.0     &         &         &         &         \\
+      10  & $(5, 2, 0)$          & 8 \textsuperscript{c}   & 24.6  & 30.1    & 39.9    & 66.0    & 1.0     &         &         &         \\
+      10  & $(6, 1, 0)$          & 862 \textsuperscript{a} & 99.2  & 28.4    & 1.0     &         &         &         &         &         \\
+      10  & $(6, 1, 0)$          & 137 \textsuperscript{b} & 69.8  & 28.1    & 29.1    & 1.0     &         &         &         &         \\
+      10  & $(6, 1, 0)$          & 1 \textsuperscript{c}   & 48.0  & 33.0    & 41.0    & 33.0    & 1.0     &         &         &         \\
+      10  & $(4, 2, 0)$          & 12 \textsuperscript{a}  & 111.1 & 36.3    & 1.0     &         &         &         &         &         \\
+      10  & $(4, 2, 0)$          & 950 \textsuperscript{b} & 119.2 & 35.9    & 42.5    & 1.0     &         &         &         &         \\
+      10  & $(4, 2, 0)$          & 38 \textsuperscript{c}  & 73.4  & 36.4    & 52.6    & 39.4    & 1.0     &         &         &         \\
+      10  & $(3, 3, 0)$          & 4 \textsuperscript{a}   & 115.0 & 39.0    & 1.0     &         &         &         &         &         \\
+      10  & $(3, 3, 0)$          & 911 \textsuperscript{b} & 138.0 & 38.5    & 53.3    & 1.0     &         &         &         &         \\
+      10  & $(3, 3, 0)$          & 85 \textsuperscript{c}  & 90.6  & 38.7    & 61.9    & 36.2    & 1.0     &         &         &         \\
+      10  & $(0, 6, 0)$          & 767 \textsuperscript{b} & 171.8 & 45.0    & 85.6    & 1.0     &         &         &         &         \\
+      10  & $(0, 6, 0)$          & 230 \textsuperscript{c} & 128.4 & 45.0    & 95.8    & 72.7    & 1.0     &         &         &         \\
+      10  & $(0, 6, 0)$          & 3 \textsuperscript{d}   & 52.3  & 45.0    & 94.7    & 90.3    & 32.7    & 1.0     &         &         \\
+      10  & $(0, 1, 1, 1)$       & 3 \textsuperscript{d}   & 52.3  & 45.0    & 94.7    & 90.3    & 32.7    & 1.0     &         &         \\
       \bottomrule\addlinespace[1ex]
     \end{tabular}
     \begin{tablenotes}\footnotesize

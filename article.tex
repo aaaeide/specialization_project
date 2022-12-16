@@ -1,4 +1,7 @@
-\documentclass[twocolumn]{layout/tudelft-aiaa}
+\documentclass[b5paper]{report}
+
+\usepackage{graphicx}
+\usepackage{mwe}
 
 \usepackage{skeldoc}
 \usepackage[kw]{pseudo}
@@ -6,56 +9,50 @@
 \usepackage{caption}
 \usepackage{threeparttable}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
 
-%% Additional packages and commands
-\renewcommand{\deg}{\si{\degree}\xspace}
+
 \tcbuselibrary{skins,theorems}
 \newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
 
 
-%% Defining title, author and affiliation
-\title{Matroids and fair allocation}
-\author{Andreas Aaberge Eide}
-\affil{NTNU - Computer Science, Specialization Project}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% Begin of document %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{document}
+\begin{titlepage}
+  \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
-\AlwaysPagewidth{
+  \vbox{ }
+  \vbox{ }
+  \begin{center}
+    % Upper part of the page
+    \includegraphics[width=0.15\textwidth]{ntnu.png}\\[1cm]
+    \textsc{\Large Department of Computer Science}\\[1.5cm]
+    \textsc{\large TDT4501 - Specialization project}\\[0.5cm]
+    \vbox{ }
 
-  \maketitle
+    % Title
+    \HRule \\[0.4cm]
+    { \huge \bfseries Matroids and fair allocation}\\[0.4cm]
+    \HRule \\[1.5cm]
 
-  %% Abstract
+    % Author
+    \large
+    \emph{Author:}\\
+    Andreas Aaberge Eide
+    \vfill
 
-  \begin{abstract}
-    \noindent \skelpar{TODO:\ Skrive abstract. Gjøres til slutt.}
-  \end{abstract}
-
-}
-
-%% Main body
-
+    % Bottom of the page
+    {\large \today\par}
+  \end{center}
+\end{titlepage}
 
 \input{introduction}
-
 \input{preliminaries}
-
-% \input{current-approaches}
-
 \input{random-matroids}
-
 \input{conclusion}
 
-
-%% Bibliography
-
-\skelbib
-
-\bibliography{article.bib}
-
-\printskelnotes
+\printskelnotes{}
+\bibliographystyle{plain}
+\bibliography{article}
 
 \end{document}

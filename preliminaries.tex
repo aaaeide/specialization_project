@@ -1,13 +1,13 @@
-\section{Background}\label{background}
+\chapter{Background}\label{background}
 
-\subsection{Fair allocation}
+\section{Fair allocation}
 Fair allocation is the problem of assigning a set of items, either goods or chores, to a set of agents such that each agent is happy with what they obtain. This is an age-old problem in economics, especially for divisible items. In the divisible case, known as cake cutting, fair allocations always exist and can be computed efficiently. Fair allocation with indivisible items is a tougher nut to crack, but computer science offers a new way to approach it with algorithmic fair allocation.
 
 A fair allocation instance consists of $m$ indivisible items $\mathcal{M} = \{1, \ldots ,m\}$ and $n$ agents $\mathcal{N} = \{1, \ldots ,n\}$. An allocation is an $n$-partition of $\mathcal{M}$, $\textbf{X} = (X_1, \ldots, X_n)$, where each $X_i \subseteq \mathcal{M}$ is the bundle of items allocated to agent $i$. There is no sharing allowed; if $i \not = j$, $X_i \cap X_j = \emptyset$, meaning each item is allocated to at most one agent. If $\bigcup_{i \in \mathcal{N} } X_i  \not =  \mathcal{M}$, that is, not all items are allocated, then $\textbf{X}$ is a partial allocation.
 
 Each agent $i$ has a valuation function $v_i: 2^M \rightarrow \mathbb{R}$, where $2^M$ denotes the Power set of $M$, that assigns a value to each possible bundle of items. The \textit{valuation profile} is the vector of valuation functions $\mathbf{v} = (v_1, \ldots, v_n)$. The marginal gain agent $i$ enjoys by adding good $g$ to their bundle $X_i$ is given by $\Delta_i(X_i, g) = v_i(X_i \cup \{g\})$.
 
-In the simple case, the valuations are additive, meaning $v_i(S) = \sum_{e \in S} v_i(\{e\})$. The valuation functions are typically also assumed to be monotonic – adding an extra good to an agent's allocation will never decrease the bundle value. More general valuation functions exist. Of special interest in this report are binary submodular valuation functions, which are equivalent to matroid rank functions (MRFs). If the valuation function $v_i$ is an MRF, it has the following properties:
+In the simple case, the valuations are additive, meaning \[v_i(S) = \sum_{e \in S} v_i(\{e\}).\] The valuation functions are typically also assumed to be monotonic – adding an extra good to an agent's allocation will never decrease the bundle value. More general valuation functions exist. Of special interest in this report are binary submodular valuation functions, which are equivalent to matroid rank functions (MRFs). If the valuation function $v_i$ is an MRF, it has the following properties:
 
 \begin{enumerate}[align=left]
   \item [(MRF1)] $f_i(\emptyset) = 0$.
@@ -38,11 +38,11 @@ An allocation rule (for instance, MNW) is group strategyproof (GSP) if there doe
 
 where $A' = f(\mathbf{v}'), A = f(\mathbf{v})$. GSP is a stronger criterion than strategyproofness.
 
-We have hitherto described fair allocation in an unconstrained setting. However, for many practical use cases, there may be good reasons to place constraints on which bundles are legal. For instance, connectivity constraints, in which only bundles of items which are connected according to a supplied connectivity graph is legal. Conflict constraints are another example, in which the item graph describes which items can never co-exist in the same bundle. Of special interest in this (I still don't know what to call this piece of text), however, are matroid constraints, in which we require each allocated bundle to be an independent set of some common matroid $\mathfrak{M}$. Biswas and Barman \cite{biswas-barman-2018} showed that EF1 allocations exist and can be found efficiently when agents have identical valuations and $\mathfrak{M}$ is laminar, but it is still an open question what fairness guarantees can be made for instances with more general constraint matroids or valuation functions.
+We have hitherto described fair allocation in an unconstrained setting. However, for many practical use cases, there may be good reasons to place constraints on which bundles are legal. For instance, connectivity constraints, in which only bundles of items which are connected according to a supplied connectivity graph is legal. Conflict constraints are another example, in which the item graph describes which items can never co-exist in the same bundle. Of special interest in this (I still don't know what to call this piece of text), however, are matroid constraints, in which we require each allocated bundle to be an independent set of some common matroid $\mathfrak{M}$. Biswas and Barman~\cite{biswas-barman-2018} showed that EF1 allocations exist and can be found efficiently when agents have identical valuations and $\mathfrak{M}$ is laminar, but it is still an open question what fairness guarantees can be made for instances with more general constraint matroids or valuation functions.
 
 
 
-\subsection{Matroids}\label{background/matroids}
+\section{Matroids}\label{background/matroids}
 A cryptomorphism is a mathematical structure that can be defined or axiomatized in several different ways, whose equivalence is not obviously apparent. A matroid is the prime example of a cryptomorphism, as they can be defined in a number of ways. Which definition is most applicable will depend on the use case. In this section, I will describe some of the ways to define a matroid.
 
 
@@ -85,7 +85,7 @@ The bases of a matroid have some interesting properties:
 
 
 
-\textbf{A matroid in terms of its closed sets.} Knuth \cite{knuth-1975} \cite{knuth-1975} uses this definition of a matroid in his algorithm for generating random matroids, which is described in part \ref{random-matroids}.
+\textbf{A matroid in terms of its closed sets.} Knuth~\cite{knuth-1975} \cite{knuth-1975} uses this definition of a matroid in his algorithm for generating random matroids, which is described in part~\ref{random-matroids}.
 
 A matroid $\mathfrak{M} = (E, \mathcal{F})$ is a ground set of elements $E$ along with a family $\mathcal{F}$ of subsets of $E$, satisfying the following axioms:
 \begin{itemize}
