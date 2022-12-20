@@ -12,10 +12,12 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\usepackage{tabto}
+
 
 \tcbuselibrary{skins,theorems}
 \newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
-
+\TabPositions{2cm}
 
 \begin{document}
 \begin{titlepage}
@@ -27,7 +29,7 @@
     % Upper part of the page
     \includegraphics[width=0.15\textwidth]{ntnu.png}\\[1cm]
     \textsc{\Large Department of Computer Science}\\[1.5cm]
-    \textsc{\large TDT4501 - Specialization project}\\[0.5cm]
+    \textsc{\large TDT4501 --- Specialization project}\\[0.5cm]
     \vbox{ }
 
     % Title
@@ -38,7 +40,9 @@
     % Author
     \large
     \emph{Author:}\\
-    Andreas Aaberge Eide
+    Andreas Aaberge Eide\\[0.5cm]
+    \emph{Supervisor:}\\
+    Magnus Lie Hetland
     \vfill
 
     % Bottom of the page
